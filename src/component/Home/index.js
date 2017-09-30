@@ -11,7 +11,7 @@ class Home extends Component {
         this.state = {
             token: '',
             id: '',
-            scope: 'user_friends, user_photos'
+            scope: 'user_friends, user_photos, user_posts'
         }
     }
 
@@ -19,25 +19,48 @@ class Home extends Component {
         // console.log(this.state);
         let url = `https://graph.facebook.com/me/friends?access_token=${this.state.token}&fields=name,id,picture,friends`;
         console.log(url);
-        window.FB.api(`/${this.state.id}/permissions`, (response) => {
-            console.log(response.data);
-        });
+
+        // window.FB.api(`/${this.state.id}/permissions`, (response) => {
+        //     console.log(response.data);
+        // });
 
         // window.FB.api(`/${this.state.id}/friends`, (response) => {
         //     console.log(response);
         // });
 
-        window.FB.api(`/${this.state.id}/photos`, (response) => {
-            console.log(response.data);
+        // window.FB.api(`/${this.state.id}/photos`, (response) => {
+        //     console.log(response.data);
+
+        //     for(let photo of response.data) {
+        //         // console.log(photo);
+
+        //         window.FB.api(`/${photo.id}`, (response) => {
+        //             console.log(response);
+        //         });                
+        //     }
+        // });
+
+        window.FB.api(`/${this.state.id}/albums`, (response) => {
+            // console.log(response);
 
             for(let photo of response.data) {
-                // console.log(photo);
+                // console.log(photo)
+                if (photo.name === "Profile Pictures") {
+                    // console.log(photo);
+                    window.FB.api(`/${photo.id}/photos`, (response) => {
 
-                window.FB.api(`/${photo.id}`, (response) => {
-                    console.log(response);
-                });                
+                        for(let photo of response.data) {
+                            // console.log(photo);
+
+                            window.FB.api(`/${photo.id}`, (response) => {
+                                console.log(response);
+                            });                
+                        }
+                    });
+
+                }
             }
-        });
+        });        
     }
 
     render() {
