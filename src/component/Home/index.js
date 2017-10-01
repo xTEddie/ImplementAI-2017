@@ -15,52 +15,25 @@ class Home extends Component {
         }
     }
 
-    getFriends() {
-        // console.log(this.state);
-        let url = `https://graph.facebook.com/me/friends?access_token=${this.state.token}&fields=name,id,picture,friends`;
-        console.log(url);
-
-        // window.FB.api(`/${this.state.id}/permissions`, (response) => {
-        //     console.log(response.data);
-        // });
-
-        // window.FB.api(`/${this.state.id}/friends`, (response) => {
-        //     console.log(response);
-        // });
-
-        // window.FB.api(`/${this.state.id}/photos`, (response) => {
-        //     console.log(response.data);
-
-        //     for(let photo of response.data) {
-        //         // console.log(photo);
-
-        //         window.FB.api(`/${photo.id}`, (response) => {
-        //             console.log(response);
-        //         });                
-        //     }
-        // });
-
-        window.FB.api(`/${this.state.id}/albums`, (response) => {
-            // console.log(response);
-
-            for(let photo of response.data) {
-                // console.log(photo)
-                if (photo.name === "Profile Pictures") {
-                    // console.log(photo);
-                    window.FB.api(`/${photo.id}/photos`, (response) => {
-
-                        for(let photo of response.data) {
-                            // console.log(photo);
-
-                            window.FB.api(`/${photo.id}`, (response) => {
-                                console.log(response);
-                            });                
-                        }
-                    });
-
+    getFeed() {
+        window.FB.api("/me/posts",
+            (response) => {
+                if (response && !response.error) {
+                    var count; 
+                    var max_size = 10;
+                    var message = {};
+                    var size = response.data.length;
+                    if (max_size > size) 
+                        max_size = size 
+                    for(count = 0; count < max_size; count++){
+                        if ("message" in response.data[count])
+                            message[count] = response.data[count].message;
+                    }
+                
+                    this.setState({message: message});
                 }
             }
-        });        
+        );
     }
 
     render() {
@@ -76,15 +49,19 @@ class Home extends Component {
                     fields="name,email,picture"                                
                     scope={this.state.scope}
                     callback={(response) => {                                                
-                        let {id, accessToken} = response;                        
-                        this.setState({id: id, token: accessToken});
-                        console.log(response);
+                        let {id, accessToken, picture: {data: {url}}} = response;                        
+                        this.setState({id: id, token: accessToken, url: url});
+                        this.getFeed();
                     }} 
                 />   
                 <button
-                    onClick={() => this.getFriends()}
+                    onClick={() => {
+                    {/*  ML can use this.state.message and this.stat.url*/}
+                        console.log(this.state);
+                        }
+                    }
                 >
-                    Get Friends
+                    Am I Depressed?  
                 </button>
             </div>
         )
