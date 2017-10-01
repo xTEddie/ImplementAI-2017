@@ -3,7 +3,7 @@ from .base import *
 DEBUG = True
 
 PROJECT_APPS = [
-
+    'backend.apps.v1.ai.apps.AiConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
