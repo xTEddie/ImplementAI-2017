@@ -165,9 +165,10 @@ class Home extends Component {
            <button
                 className="btn btn-lg btn-custom"
                 onClick={() => {                                            
-                    window.FB.logout((response) => {
-                        this.setState({loggedIn: false});
-                    });
+                    window.FB.logout((response) => {  
+                        console.log(response);                                         
+                        window.location.href = '/';                        
+                    })
                 }}
             >
                 Logout
