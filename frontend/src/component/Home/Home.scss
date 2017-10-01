@@ -54,3 +54,18 @@ $base-color: #02c9c9;
     height: 200px;
     position: relative;
 }
+
+#gif-wrap {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background-color: #000;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 300px;
+	height: 200px; 
+}

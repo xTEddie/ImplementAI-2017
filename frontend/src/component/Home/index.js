@@ -19,7 +19,8 @@ class Home extends Component {
             scope: 'user_friends, user_photos, user_posts',
             textButton: 'Sign In',
             loggedIn: false,
-            progress: 0
+            progress: 0,
+            disabledGif: true
         }
     }
 
@@ -29,8 +30,7 @@ class Home extends Component {
                 if (response && !response.error) {                    
                     let size = response.data.length;
                     let max_size = max_size > size? size: 10;
-                    let message = {};      
-                                  
+                    let message = {};              
                     for(let count = 0; count < max_size; count++){
                         // Remove hashtags
                         if ("message" in response.data[count]) {
@@ -77,13 +77,70 @@ class Home extends Component {
         bar.text.style.fontSize = '2rem';
 
         bar.animate(this.state.progress / 100);  // Number from 0.0 to 1.0
+
+
     }
 
-    componentDidMount() {
-        if(this.state.progress > 0) {
-            this.renderProgressBar();
-        }
+    renderGif(){
+        // Initiate gifLoop for set interval
+        var refresh;
+        // Duration count in seconds
+        const duration = 1000 * 10;
+        // Giphy API defaults
+        const giphy = {
+            baseURL: "https://api.giphy.com/v1/gifs/",
+            key: "dc6zaTOxFJmzC",
+            tag: "fail",
+            type: "random",
+            rating: "pg-13"
+        };
+        // Target gif-wrap container
+        const $gif_wrap = $("#gif-wrap");
+        // Giphy API URL
+        let giphyURL = encodeURI(
+            giphy.baseURL +
+                giphy.type +
+                "?api_key=" +
+                giphy.key +
+                "&tag=" +
+                giphy.tag +
+                "&rating=" +
+                giphy.rating
+        );
+
+        // Call Giphy API and render data
+        var newGif = () => $.getJSON(giphyURL, json => renderGif(json.data));
+
+        // Display Gif in gif wrap container
+        var renderGif = _giphy => {
+            // Set gif as bg image           
+
+            $gif_wrap.css({
+                "background-image": 'url("' + _giphy.image_original_url + '")',
+                "display": "block"
+            });
+
+            // Start duration countdown
+            refreshRate();
+        };
+
+        // Call for new gif after duration
+        var refreshRate = () => {
+            // Reset set intervals
+            clearInterval(refresh);
+            refresh = setInterval(function() {
+                // Call Giphy API for new gif
+                newGif();
+            }, duration);
+        };
+
+        // Call Giphy API for new gif
+        newGif();
     }
+
+    // renderHappyEmoji(){
+
+    // }
 
     render() {
 
@@ -150,7 +207,16 @@ class Home extends Component {
 
                             $('#circle').remove();
                             $(".container").append('<div id="circle"></div>');
-                            this.renderProgressBar();                            
+                            this.renderProgressBar();
+
+                            if(this.state.progress < 50) {
+                                this.renderGif();
+                                this.setState({disabledGif: true});
+                            }
+
+                        // else
+                        //     this.renderHappyEmoji();
+                                // this.setState({disabledGif: false});                            
                         })
                         .catch((error) => {
                             console.log(error);
@@ -167,6 +233,7 @@ class Home extends Component {
                 onClick={() => {                                            
                     window.FB.logout((response) => {
                         this.setState({loggedIn: false});
+                        this.setState({disabledGif: false});
                     });
                 }}
             >
@@ -189,9 +256,10 @@ class Home extends Component {
                 {this.state.loggedIn? logoutButton: loginButton}
                 <p></p>
                 {this.state.loggedIn? checkDepressionButton: ''}
-
-
-                <div id="circle"></div>
+                <div id="data" style={{'display': 'inline'}}>
+                    <div id="circle"></div>
+                    <div id="gif-wrap"></div>
+                </div>
             </div>
         )
     }
