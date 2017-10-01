@@ -1,15 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 
+let API_HOST = 'localhost:8000';
+
 module.exports = {
     devServer: {
         inline: true,
         host: '0.0.0.0',
         port: 3000,
-        contentBase: './build',
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        }
+        contentBase: './build'
     },
     entry: {
         app: './src/index.js'
@@ -36,7 +35,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('development')
+                'NODE_ENV': JSON.stringify('development'),
+                'API_ROOT': JSON.stringify(`http://${API_HOST}`)
             }
         })
     ]      
