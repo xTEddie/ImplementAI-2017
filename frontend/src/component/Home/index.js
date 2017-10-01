@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
+import {Circle} from 'react-progressbar.js';
 import settings from '../../config/settings';
 import './Home.scss';
+import $ from 'jquery';
+// const circleProgress = require('jquery-circle-progress');
+const ProgressBar = require('progressbar.js');
 
 
 
@@ -15,7 +19,8 @@ class Home extends Component {
             id: '',
             scope: 'user_friends, user_photos, user_posts',
             textButton: 'Sign In',
-            loggedIn: false
+            loggedIn: false,
+            progress: 50
         }
     }
 
@@ -42,13 +47,45 @@ class Home extends Component {
     }
 
     componentDidMount() {
- 
+        // $('#circle').circleProgress({
+        //     value: 0.75,
+        //     size: 200,
+        //     animationStartValue: 0,
+        //     fill: {
+        //     gradient: ["red", "orange"]
+        //     }
+        // });
 
-    }
-
-    setCharAt(str, index, chr) {
-        if(index > str.length-1) return str;
-        return str.substr(0,index) + chr + str.substr(index+1);
+        
+        var bar = new ProgressBar.Line('#circle', {
+            strokeWidth: 4,
+            easing: 'easeInOut',
+            duration: 1400,
+            color: '#FFEA82',
+            trailColor: '#eee',
+            trailWidth: 1,
+            svgStyle: {width: '100%', height: '100%'},
+            text: {
+                style: {
+                    // Text color.
+                    // Default: same as stroke color (options.color)
+                    color: '#999',
+                    position: 'absolute',
+                    right: '0',
+                    top: '30px',
+                    padding: 0,
+                    margin: 0,
+                    transform: null
+                },
+                autoStyleContainer: false
+            },
+            from: {color: '#FFEA82'},
+            to: {color: '#ED6A5A'},
+            step: (state, bar) => {
+                bar.setText(Math.round(bar.value() * 100) + ' %');
+            }
+        });
+        bar.animate(1);
     }
 
     render() {
@@ -136,6 +173,8 @@ class Home extends Component {
                 
                 {this.state.loggedIn? '': loginButton}
                 {this.state.loggedIn? checkDepressionButton: ''}
+
+                <div id="circle"></div>
             </div>
         )
     }
