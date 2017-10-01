@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, httplib, urllib, json
+import sys, httplib, urllib, json,time
 from random import randint
 from pprint import pprint
 
@@ -35,7 +35,7 @@ def AnalyzeProfileImage(url):
                 'fear'] + face['scores']['contempt']
             sum += negative
             count += 1
-        if count!=0:
+        if count != 0:
             averageNegative = sum * 100 / count
         else:
             return 100
@@ -82,8 +82,9 @@ def GetImageDescription(url):
         return result
 
     except Exception as e:
-        print('Error:')
-        print(e)
+        print('(Request limit reached, sleeping for 20 Sec ...)')
+        time.sleep(20)
+        GetImageDescription(url)
 
 
 def AnalyzeText(documents):
@@ -113,14 +114,20 @@ def CreateDocuments(listOfStrings):
     return dcm
 
 
-def AnalyzeImage(url1, url2, url3):
-    result = AnalyzeText(
-        CreateDocuments([GetImageDescription(url1), GetImageDescription(url2), GetImageDescription(url3)]))
-    return str(result["documents"][0]["score"]*100) + "," + str(result["documents"][1]["score"]*100) + "," + str(
-        result["documents"][2]["score"]*100)
+def AnalyzeImage(urls):
+    Descriptions = []
+    for url in urls:
+        Descriptions.append(GetImageDescription(url))
+    response = AnalyzeText(CreateDocuments(Descriptions))
+    result = ""
+    for e in response["documents"]:
+        result += "," + str(e["score"] * 100)
+    return result
+
 
 def file_len(fname):
     return sum(1 for line in fname)
+
 
 def main(argv):
     if len(argv) < 2:
@@ -149,12 +156,21 @@ def main(argv):
             print("File not specified")
             exit(1)
         ifile = open(argv[2], "r")
-        flen =file_len(open(argv[2], "r"))
-        ofile = open(argv[2].split(".")[0] + "_WITH_PHOTO_URL." + argv[2].split(".")[1], "w")
-        ofile.write(ifile.readline().rstrip() + ",Profile Score,Photo1 Score,Photo2 Score,Photo3 Score,Depression\n")
-        i=1
+        iflen = file_len(open(argv[2], "r"))
+        ofile = open(argv[2].split(".")[0] + "_WITH_PHOTO_URL." + argv[2].split(".")[1], "a")
+        oflen = file_len(open(argv[2].split(".")[0] + "_WITH_PHOTO_URL." + argv[2].split(".")[1], "r"))
+        if oflen == 0:
+            ofile.write(
+                ifile.readline().rstrip() + ",Profile Score,Photo1 Score,Photo2 Score,Photo3 Score,Depression\n")
+            oflen+=1
+
+        for line in range(0, oflen):
+            ifile.readline()
+            iflen-=1
+
+        i = 1
         for line in ifile:
-            print("Processing line %d/%d"%(i,flen))
+            print("Processing line %d/%d" % (i, iflen))
             line = line.rstrip()
             gender = line.split(",")[1]
             g = ""
@@ -163,13 +179,13 @@ def main(argv):
             elif gender == 'F':
                 g = "women"
 
-            imageDes = AnalyzeImage("http://lorempixel.com/400/400/", "http://lorempixel.com/400/400/",
-                                    "http://lorempixel.com/400/400/")
+            imageDes = AnalyzeImage(["http://lorempixel.com/400/400/", "http://lorempixel.com/400/400/",
+                                     "http://lorempixel.com/400/400/"])
             profileDes = str(AnalyzeProfileImage(
                 "https://randomuser.me/api/portraits/" + str(g) + "/" + str(randint(0, 99)) + ".jpg"))
-            s = (line + "," + profileDes + "," + imageDes + "," + str(randint(1, 100)) + "\n")
+            s = (line + "," + profileDes + imageDes + "," + str(randint(1, 100)) + "\n")
             ofile.write(s)
-            i+=1
+            i += 1
         ifile.close()
 
 
