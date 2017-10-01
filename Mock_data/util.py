@@ -82,8 +82,7 @@ def GetImageDescription(url):
         return result
 
     except Exception as e:
-        print('Error:')
-        print(e)
+        print('(Request limit reached, sleeping for 20 Sec ...)')
         time.sleep(20)
         GetImageDescription(url)
 
