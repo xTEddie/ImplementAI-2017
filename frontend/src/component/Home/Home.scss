@@ -46,3 +46,11 @@ $base-color: #02c9c9;
 	border: calc(.06887vw + .67769px) solid $base-color;
     padding: calc(.34435vw + 13.38843px) calc(.34435vw + 18.38843px);
 }
+
+#circle {
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 200px;
+    height: 200px;
+    position: relative;
+}

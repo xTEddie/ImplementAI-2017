@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
-import {Circle} from 'react-progressbar.js';
 import settings from '../../config/settings';
 import './Home.scss';
 import $ from 'jquery';
-// const circleProgress = require('jquery-circle-progress');
+
 const ProgressBar = require('progressbar.js');
 
 
@@ -47,45 +46,37 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        // $('#circle').circleProgress({
-        //     value: 0.75,
-        //     size: 200,
-        //     animationStartValue: 0,
-        //     fill: {
-        //     gradient: ["red", "orange"]
-        //     }
-        // });
 
-        
-        var bar = new ProgressBar.Line('#circle', {
+        let bar = new ProgressBar.Circle('#circle', {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
             strokeWidth: 4,
+            trailWidth: 1,
             easing: 'easeInOut',
             duration: 1400,
-            color: '#FFEA82',
-            trailColor: '#eee',
-            trailWidth: 1,
-            svgStyle: {width: '100%', height: '100%'},
             text: {
-                style: {
-                    // Text color.
-                    // Default: same as stroke color (options.color)
-                    color: '#999',
-                    position: 'absolute',
-                    right: '0',
-                    top: '30px',
-                    padding: 0,
-                    margin: 0,
-                    transform: null
-                },
                 autoStyleContainer: false
             },
-            from: {color: '#FFEA82'},
-            to: {color: '#ED6A5A'},
-            step: (state, bar) => {
-                bar.setText(Math.round(bar.value() * 100) + ' %');
+            from: { color: '#70A249', width: 1 },
+            to: { color: '#f00', width: 3 },
+            // Set default step function for all animate calls
+            step: function(state, circle) {
+                circle.path.setAttribute('stroke', state.color);
+                circle.path.setAttribute('stroke-width', state.width);
+
+                let value = Math.round(circle.value() * 100);
+                if (value === 0) {
+                    circle.setText('');
+                } else {
+                    circle.setText(value);
+                }
             }
         });
-        bar.animate(1);
+        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        bar.text.style.fontSize = '2rem';
+
+        bar.animate(this.state.progress / 100);  // Number from 0.0 to 1.0
     }
 
     render() {
