@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
-from config.environment import SETTINGS_MODULE
+from backend.config.environment import SETTINGS_MODULE
 
 
 if __name__ == "__main__":
