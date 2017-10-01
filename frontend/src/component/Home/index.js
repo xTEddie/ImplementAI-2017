@@ -8,7 +8,6 @@ import $ from 'jquery';
 const ProgressBar = require('progressbar.js');
 
 
-
 class Home extends Component {
 
     constructor(props) {
@@ -225,7 +224,7 @@ class Home extends Component {
 
         let logoutButton = (
            <button
-                className="btn btn-lg btn-customize"
+                className="btn btn-lg btn-logout"
                 onClick={() => {                                            
                     window.FB.logout((response) => {  
                         console.log(response);                                         
