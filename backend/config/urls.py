@@ -6,6 +6,10 @@ from rest_framework.documentation import include_docs_urls
 
 
 urlpatterns = [
+    
+    # API (v1)
+    url(r'^', include('backend.apps.v1.ai.urls')),
+
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^', include_docs_urls(title='Depression Detector')),
