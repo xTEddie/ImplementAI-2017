@@ -50,8 +50,14 @@ class Home extends Component {
     render() {
 
         return (
-            <div> 
-                <h1> Emotion Tracker </h1>
+            <div className="container"> 
+                <h1>                     
+                    <span style={{color: 'blue'}}> <i className="fa fa-stethoscope" aria-hidden="true"></i> </span>
+                    {" "}
+                    Emotion Tracker 
+                    {" "}
+                    <span style={{color: 'red'}}> <i className="fa fa-heartbeat" aria-hidden="true"></i> </span>
+                </h1>
                 
                 <FacebookLogin
                     version='2.10'
