@@ -19,7 +19,8 @@ class Home extends Component {
             textButton: 'Sign In',
             loggedIn: false,
             progress: 0,
-            disabledGif: true
+            disabledGif: true,
+            username: "",
         }
     }
 
@@ -198,6 +199,7 @@ class Home extends Component {
                         gender: this.state.gender,
                         name: this.state.name
                     };
+                    this.setState({username:this.state.name})
 
                     axios.post(`${settings.API_ROOT}/ai`, data)
                         .then((response) => {
@@ -240,14 +242,20 @@ class Home extends Component {
         console.log(this.state.progress)
         if (this.state.progress < 50 && this.state.progress >= 20) {
             returnMessage = (
-                <p>You seems happy</p>
+               <div>
+                    <p id="message"> Don't worry {this.state.username}, you are feeling okay!!</p>
+                </div>
             )
         }
         else if (this.state.progress < 20 && this.state.progress > 0) 
-            returnMessage = (<p> You Seems to be in really Happy !!</p>);
+            returnMessage = (<p id="message"> You seems to be in a really good Mode {this.state.username}!!</p>);
             
         else if (this.state.progress >= 50) 
-            returnMessage = (<p> You Seems to be not too happy. Enjoy some funny Gify!!</p>);
+            returnMessage = (
+                <div>
+                    <p id="message"> Hey {this.state.username}, your depression level seems to be a little bit high today. Let's enjoy some funny Gify!!</p>
+                </div>
+            );
         
 
         return (
