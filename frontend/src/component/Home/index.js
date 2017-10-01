@@ -229,7 +229,7 @@ class Home extends Component {
 
         let logoutButton = (
            <button
-                className="btn btn-lg btn-custom"
+                className="btn btn-lg btn-customize"
                 onClick={() => {                                            
                     window.FB.logout((response) => {  
                         console.log(response);                                         

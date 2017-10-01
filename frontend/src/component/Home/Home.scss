@@ -11,6 +11,16 @@ $base-color: #02c9c9;
 
 .btn-custom {
 	background-color: $base-color;
+	bottom: 30px;
+}
+
+.btn-customize {
+	position: fixed;
+    right: 5%;
+    bottom: 5%;
+    top: auto;
+    border-radius: 25px;
+    background-color: #d3937a
 }
 
 @keyframes color_change {
