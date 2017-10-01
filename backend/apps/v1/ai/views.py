@@ -31,11 +31,11 @@ class AiView(APIView):
     permission_classes = ()
 
     def get(self, request):
-        # GetMLPrediction(myData)
+        GetMLPrediction(myData)
         return Response("HELLO")
 
     def post(self, request):
         #print(request.data)
         result = process_ml_request(request.data)
         print(result)
-        return Response("BYEE")
+        return Response(dict(result=result))
