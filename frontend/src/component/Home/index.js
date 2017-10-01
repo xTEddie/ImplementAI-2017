@@ -161,6 +161,19 @@ class Home extends Component {
             </button>
         ); 
 
+        let logoutButton = (
+           <button
+                className="btn btn-lg btn-custom"
+                onClick={() => {                                            
+                    window.FB.logout((response) => {
+                        this.setState({loggedIn: false});
+                    });
+                }}
+            >
+                Logout
+            </button>
+        );
+
         return (
             <div className="container">
                 <div> 
@@ -173,8 +186,10 @@ class Home extends Component {
                     </h1>
                 </div>
                 
-                {this.state.loggedIn? '': loginButton}
+                {this.state.loggedIn? logoutButton: loginButton}
+                <p></p>
                 {this.state.loggedIn? checkDepressionButton: ''}
+
 
                 <div id="circle"></div>
             </div>
