@@ -6,7 +6,10 @@ module.exports = {
         inline: true,
         host: '0.0.0.0',
         port: 3000,
-        contentBase: './build'
+        contentBase: './build',
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        }
     },
     entry: {
         app: './src/index.js'
