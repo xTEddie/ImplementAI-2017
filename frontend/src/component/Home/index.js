@@ -206,7 +206,7 @@ class Home extends Component {
                             this.setState({progress: parseInt(response.data.result)})
 
                             $('#circle').remove();
-                            $(".container").append('<div id="circle"></div>');
+                            $("#result").append('<div id="circle"></div>');
                             this.renderProgressBar();
 
                             if(this.state.progress < 50) {
@@ -256,10 +256,10 @@ class Home extends Component {
                 {this.state.loggedIn? logoutButton: loginButton}
                 <p></p>
                 {this.state.loggedIn? checkDepressionButton: ''}
-                <div id="data" style={{'display': 'inline'}}>
+                <div id="result">
                     <div id="circle"></div>
-                    <div id="gif-wrap"></div>
                 </div>
+                <div id="gif-wrap"></div>
             </div>
         )
     }
