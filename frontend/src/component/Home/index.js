@@ -253,7 +253,7 @@ class Home extends Component {
         else if (this.state.progress >= 50) 
             returnMessage = (
                 <div>
-                    <p id="message"> Hey {this.state.username}, your depression level seems to be a little bit high today. Let's enjoy some funny Gify!!</p>
+                    <p id="message"> Hey {this.state.username}, your depression level seems to be a little bit high this day. Hope this helps!!</p>
                 </div>
             );
         
