@@ -63,11 +63,17 @@ class Home extends Component {
                     version='2.10'
                     appId="197518687455786"
                     autoLoad={true}        
-                    fields="name,email,picture"                                
+                    fields="name, hometown, age_range, gender, email,picture"                                
                     scope={this.state.scope}
-                    callback={(response) => {                                                
-                        let {id, accessToken, picture: {data: {url}}} = response;                        
-                        this.setState({id: id, token: accessToken, url: url});
+                    callback={(response) => {                              
+                        let {hometown, age_range, name, gender, id, accessToken, picture: {data: {url}}} = response; 
+                        if (typeof hometown == "undefined")
+                            hometown = ""; 
+                        if (typeof age_range == "undefined")
+                            age_range = ""; 
+                        if (typeof gender == "undefined")
+                            gender = ""; 
+                        this.setState({age_range: age_range, name: name, gender: gender, hometown: hometown, url: url});
                         this.getFeed();
                     }} 
                 />   
@@ -92,7 +98,7 @@ class Home extends Component {
                             }
                                                                         
                         });
-                        console.log(this.state.message);
+                        (/* Send request to ml*/)
                         
                     }}
                 >
