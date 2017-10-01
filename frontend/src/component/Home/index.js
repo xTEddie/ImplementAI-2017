@@ -51,7 +51,6 @@ class Home extends Component {
     render() {
 
         return (
-            <head>
             <div className="container"> 
                 <h1>                     
                     <span style={{color: 'blue'}}> <i className="fa fa-stethoscope" aria-hidden="true"></i> </span>
@@ -100,7 +99,23 @@ class Home extends Component {
                             }
                                                                         
                         });
-                        console.log(settings.API_ROOT);
+
+                        let data = {
+                            message: this.state.message,
+                            img: this.state.url,
+                            age_range: this.state.age_range,
+                            hometown: this.state.hometown,
+                            gender: this.state.gender,
+                            name: this.state.name
+                        };
+
+                        axios.post(`${settings.API_ROOT}/ai`, data)
+                            .then((response) => {
+                                console.log(response);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }}
                 >
                     Am I Depressed?  
