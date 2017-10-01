@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
+import settings from '../../config/settings';
 
 
 
@@ -50,6 +51,7 @@ class Home extends Component {
     render() {
 
         return (
+            <head>
             <div className="container"> 
                 <h1>                     
                     <span style={{color: 'blue'}}> <i className="fa fa-stethoscope" aria-hidden="true"></i> </span>
@@ -76,7 +78,7 @@ class Home extends Component {
                         this.setState({age_range: age_range, name: name, gender: gender, hometown: hometown, url: url});
                         this.getFeed();
                     }} 
-                />   
+                /> 
                 <button
                     onClick={() => {                                            
 
@@ -98,8 +100,7 @@ class Home extends Component {
                             }
                                                                         
                         });
-                        (/* Send request to ml*/)
-                        
+                        console.log(settings.API_ROOT);
                     }}
                 >
                     Am I Depressed?  
