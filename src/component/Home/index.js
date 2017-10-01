@@ -42,6 +42,11 @@ class Home extends Component {
 
     }
 
+    setCharAt(str, index, chr) {
+        if(index > str.length-1) return str;
+        return str.substr(0,index) + chr + str.substr(index+1);
+    }
+
     render() {
 
         return (
@@ -61,24 +66,24 @@ class Home extends Component {
                     }} 
                 />   
                 <button
-                    onClick={() => {
-                        {/*  ML can use this.state.message and this.stat.url*/}
-                        console.log(this.state.message);
+                    onClick={() => {                                            
 
                         const emojiRegex = require('emoji-regex/es2015/index.js');
                         const emojiRegexText = require('emoji-regex/es2015/text.js');
                         let regex = emojiRegex();
 
-                        let {messsage} = this.state.message 
+                        let {message} = this.state;
                         Object.keys(message).map((key, index) => {
-                            let text = message[key];
-                            let match = regex.exec(text);
+                        
+                            let match = regex.exec(message[key]);
                             
+                            // Filter out emoji
                             if(match) {
-                                console.log(match);
-                                console.log(match.index);
+                                message[key] = message[key].substr(0, match.index) + message[key].substring(match.index + match.input.length);
                             }
 
+                            this.setState({message: message});    
+                            console.log(this.state.message)                        
                         });
                         
                     }}
