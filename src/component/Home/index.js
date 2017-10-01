@@ -18,14 +18,12 @@ class Home extends Component {
     getFeed() {
         window.FB.api("/me/posts",
             (response) => {
-                if (response && !response.error) {
-                    var count; 
-                    var max_size = 10;
-                    var message = {};
-                    var size = response.data.length;
-                    if (max_size > size) 
-                        max_size = size 
-                    for(count = 0; count < max_size; count++){
+                if (response && !response.error) {                    
+                    let size = response.data.length;
+                    let max_size = max_size > size? size: 10;
+                    let message = {};      
+                                  
+                    for(let count = 0; count < max_size; count++){
                         if ("message" in response.data[count])
                             message[count] = response.data[count].message;
                     }
@@ -56,10 +54,9 @@ class Home extends Component {
                 />   
                 <button
                     onClick={() => {
-                    {/*  ML can use this.state.message and this.stat.url*/}
+                        {/*  ML can use this.state.message and this.stat.url*/}
                         console.log(this.state);
-                        }
-                    }
+                    }}
                 >
                     Am I Depressed?  
                 </button>
