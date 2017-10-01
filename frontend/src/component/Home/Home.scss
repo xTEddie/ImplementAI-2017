@@ -2,7 +2,7 @@ $base-color: #02c9c9;
 
 .container {
 	margin-top: 25px;
-	text-align: center;
+	text-align: center;   
 }
 	
 .h1 {
@@ -12,15 +12,23 @@ $base-color: #02c9c9;
 .btn-custom {
 	background-color: $base-color;
 	bottom: 30px;
+    -webkit-animation: 1s intro ease-in;
+    -moz-animation: 1s intro ease-in;
+    -o-animation: 1s intro ease-in;
+    animation: 1s intro ease-in;    
 }
 
-.btn-customize {
+.btn-logout {
 	position: fixed;
     right: 5%;
     bottom: 5%;
     top: auto;
     border-radius: 25px;
-    background-color: #d3937a
+    background-color: #d3937a;
+    -webkit-animation: 2s intro ease-in;
+    -moz-animation: 2s intro ease-in;
+    -o-animation: 2s intro ease-in;
+    animation: 2s intro ease-in;
 }
 
 @keyframes color_change {
@@ -31,6 +39,25 @@ $base-color: #02c9c9;
 @keyframes heartbeat {
 	from { font-size: inherit; }
 	to { font-size: 110%; }
+}
+
+@keyframes intro {
+    from {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.intro {
+  -webkit-animation: 2s intro ease-in;
+  -moz-animation: 2s intro ease-in;
+  -o-animation: 2s intro ease-in;
+  animation: 2s intro ease-in;
 }
 
 .title {
@@ -55,6 +82,10 @@ $base-color: #02c9c9;
 	background-color: $base-color;
 	border: calc(.06887vw + .67769px) solid $base-color;
     padding: calc(.34435vw + 13.38843px) calc(.34435vw + 18.38843px);
+    -webkit-animation: 1s intro ease-in;
+    -moz-animation: 1s intro ease-in;
+    -o-animation: 1s intro ease-in;
+    animation: 1s intro ease-in;     
 }
 
 #circle {
@@ -81,4 +112,8 @@ $base-color: #02c9c9;
 	width: 500px;
 	height: 300px; 
     margin-bottom: 200px;
+    -webkit-animation: 1s intro ease-in;
+    -moz-animation: 1s intro ease-in;
+    -o-animation: 1s intro ease-in;
+    animation: 1s intro ease-in;     
 }
