@@ -25,7 +25,8 @@ class Home extends Component {
                                   
                     for(let count = 0; count < max_size; count++){
                         if ("message" in response.data[count])
-                            message[count] = response.data[count].message;
+                            var regexp = new RegExp('#([^\\s]*)','g');
+                            message[count] = (response.data[count].message).replace(regexp, '');;
                     }
                 
                     this.setState({message: message});
