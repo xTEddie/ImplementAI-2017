@@ -54,7 +54,7 @@ class Home extends Component {
                 <h1>                     
                     <span style={{color: 'blue'}}> <i className="fa fa-stethoscope" aria-hidden="true"></i> </span>
                     {" "}
-                    Emotion Tracker 
+                    Depression Detector
                     {" "}
                     <span style={{color: 'red'}}> <i className="fa fa-heartbeat" aria-hidden="true"></i> </span>
                 </h1>
