@@ -1,0 +1,48 @@
+$base-color: #02c9c9;
+
+.container {
+	margin-top: 25px;
+	text-align: center;
+}
+	
+.h1 {
+	color: blue;
+}
+
+.btn-custom {
+	background-color: $base-color;
+}
+
+@keyframes color_change {
+	from { color: #A25449; }
+	to { color: #70A249; }
+}
+
+@keyframes heartbeat {
+	from { font-size: inherit; }
+	to { font-size: 110%; }
+}
+
+.title {
+    animation-name: color_change;
+	animation-duration: 2.5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+.fa-heartbeat {
+    animation-name: heartbeat;
+	animation-duration: .5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+.login-facebook {
+    transition: background-color .3s,border-color .3s;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 5px;
+	background-color: $base-color;
+	border: calc(.06887vw + .67769px) solid $base-color;
+    padding: calc(.34435vw + 13.38843px) calc(.34435vw + 18.38843px);
+}
