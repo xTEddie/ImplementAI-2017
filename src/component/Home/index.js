@@ -24,9 +24,11 @@ class Home extends Component {
                     let message = {};      
                                   
                     for(let count = 0; count < max_size; count++){
-                        if ("message" in response.data[count])
+                        // Remove hashtags
+                        if ("message" in response.data[count]) {
                             var regexp = new RegExp('#([^\\s]*)','g');
-                            message[count] = (response.data[count].message).replace(regexp, '');;
+                            message[count] = (response.data[count].message).replace(regexp, '');
+                        }
                     }
                 
                     this.setState({message: message});
@@ -67,8 +69,9 @@ class Home extends Component {
                         const emojiRegexText = require('emoji-regex/es2015/text.js');
                         let regex = emojiRegex();
 
-                        Object.keys(this.state.message).map((key, index) => {
-                            let text = this.state.message[key];
+                        let {messsage} = this.state.message 
+                        Object.keys(message).map((key, index) => {
+                            let text = message[key];
                             let match = regex.exec(text);
                             
                             if(match) {
