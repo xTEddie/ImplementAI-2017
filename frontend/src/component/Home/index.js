@@ -19,7 +19,7 @@ class Home extends Component {
             scope: 'user_friends, user_photos, user_posts',
             textButton: 'Sign In',
             loggedIn: false,
-            progress: 50
+            progress: 0
         }
     }
 
@@ -45,7 +45,7 @@ class Home extends Component {
         );
     }
 
-    componentDidMount() {
+    renderProgressBar() {
 
         let bar = new ProgressBar.Circle('#circle', {
             color: '#aaa',
@@ -54,7 +54,7 @@ class Home extends Component {
             strokeWidth: 4,
             trailWidth: 1,
             easing: 'easeInOut',
-            duration: 1400,
+            duration: 1000,
             text: {
                 autoStyleContainer: false
             },
@@ -77,6 +77,12 @@ class Home extends Component {
         bar.text.style.fontSize = '2rem';
 
         bar.animate(this.state.progress / 100);  // Number from 0.0 to 1.0
+    }
+
+    componentDidMount() {
+        if(this.state.progress > 0) {
+            this.renderProgressBar();
+        }
     }
 
     render() {
@@ -140,6 +146,11 @@ class Home extends Component {
                     axios.post(`${settings.API_ROOT}/ai`, data)
                         .then((response) => {
                             console.log(response);
+                            this.setState({progress: parseInt(response.data.result)})
+
+                            $('#circle').remove();
+                            $(".container").append('<div id="circle"></div>');
+                            this.renderProgressBar();                            
                         })
                         .catch((error) => {
                             console.log(error);
