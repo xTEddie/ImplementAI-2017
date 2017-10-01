@@ -1,8 +1,7 @@
 ENVIRONMENT = 'dev'
 # ENVIRONMENT = 'prod'
 
-# SETTINGS_MODULE = 'backend.config.settings.dev'
-SETTINGS_MODULE = 'backend.config.settings.base'
+SETTINGS_MODULE = 'backend.config.settings.dev'
 
 if ENVIRONMENT == 'prod':
     SETTINGS_MODULE = 'backend.config.settings.prod'
