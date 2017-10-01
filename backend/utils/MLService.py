@@ -1,43 +1,41 @@
 import urllib.request, urllib.error, urllib.parse
 import json
-import backend.utils.util
+from backend.utils.util import AnalyzeProfileImage, AnalyzeText, CreateDocuments
 
 
-def process_request(self, request):
-    name = request.GET.get('name', 'noname')
-    gender = request.GET.get('gender', 'F')
-    age_range = request.GET.get('age_range', {'min':' 30'})
+def process_ml_request(data):
+    name = data['name'] if data['name']!="" else "Default"
+    gender = data['gender'] if data['gender'] !="" else "F"
+    age_range = data['age_range'] if data['age_range']!="" else {"max":"30"}
     age = '30'
-    for (k,v) in age_range:
+    for (k,v) in age_range.items():
         age = v
-    hometown = request.GET.get('hometown', 'montreal')
+    hometown = data['hometown'] if data['hometown'] !="" else "Montreal"
     depression = "0"
 
-    imageUrl = request.GET.get('img','')
-    messages = request.GET.get('message',{})
+    imageUrl = data['img']
+    messages = data['message'] if data['message']!="" else [] 
     profileScore = "50"
     photoScore = []
 
     #get profile picture
     if imageUrl !="":
-        profileScore = util.AnalyzeProfileImage(imageUrl)
+        profileScore = AnalyzeProfileImage(imageUrl)
 
     #group all messages
+
     listOfStrings = []
-    for (k,message) in messages:
+    for (k,message) in messages.items():
         listOfStrings.append(message)
-    #create doc for messages
-    doc  = util.CreateDocuments(listOfStrings)
     #query sentiment text api
-    res = util.AnalyzeText(doc)
+    res = AnalyzeText(CreateDocuments(listOfStrings))
     #populate text score
     for e in res['documents']:
-        photoScore.append(e['score'])
+         photoScore.append(e['score'])
     #fill list with 50s
-    if photoScore.count() < 10:
-        for x in range (0, 10 - photoScore.count()):
+    if len(photoScore) < 3:
+        for x in range (0, 3 - len(photoScore)):
             photoScore.append("50")
-
 
     input ={
         'Name': name,
@@ -45,11 +43,15 @@ def process_request(self, request):
         'Age': age,
         'HomeTown': hometown,
         'Profile Score': profileScore,
+        'Depression': depression
     }
     count = 1;
     for y in photoScore:
-        input["Photo"+str(count)] = y
+        input["Photo"+str(count)+" Score"] = y
+        if count == 3:
+            break
         count+=1
+
 
     data = {
         "Inputs": {
@@ -60,9 +62,14 @@ def process_request(self, request):
         },
         "GlobalParameters":  {
         }
-    }
+    } 
+    print(data)
     ans = GetMLPrediction(data)
-    return json.loads(ans)["Results"]["output1"][0]["Scored Labels"]
+    if ans:
+        # decodedStr = ans.read().decode("utf-8")
+        return json.loads(ans.decode("utf-8"))["Results"]["output1"][0]["Scored Labels"]
+    else:
+        return '0.5'
 
 
 
@@ -103,11 +110,12 @@ def GetMLPrediction (data):
         response = urllib.request.urlopen(req)
 
         result = response.read()
-        print(result)
         return result
     except urllib.error.HTTPError as error:
         print(("The request failed with status code: " + str(error.code)))
 
         # Print the headers - they include the requert ID and the timestamp, which are useful for debugging the failure
         print((error.info()))
-        print((json.loads(error.read())))
+        decodedStr = error.read().decode("utf-8")
+        print((json.loads(decodedStr)))
+        return ""

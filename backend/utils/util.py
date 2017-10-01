@@ -25,7 +25,7 @@ def AnalyzeProfileImage(url):
         conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
         response = conn.getresponse()
         data = response.read()
-
+        print("GOT IT")
         parsed = json.loads(data)
         sum = 0
         count = 0
@@ -42,7 +42,8 @@ def AnalyzeProfileImage(url):
         conn.close()
         return averageNegative
     except Exception as e:
-        print(("[Errno {0}] {1}".format(e.errno, e.strerror)))
+        print("ERORRORO")
+        return 100
 
 
 def GetImageDescription(url):
@@ -101,7 +102,8 @@ def AnalyzeText(documents):
     body = json.dumps({"documents": documents})
     conn.request("POST", path, body, headers)
     response = conn.getresponse()
-    return json.loads(response.read())
+    decodedStr = response.read().decode("utf-8")
+    return json.loads(decodedStr)
 
 
 # assume language in english
