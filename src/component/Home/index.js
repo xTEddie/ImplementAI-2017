@@ -34,6 +34,11 @@ class Home extends Component {
         );
     }
 
+    componentDidMount() {
+ 
+
+    }
+
     render() {
 
         return (
@@ -55,7 +60,23 @@ class Home extends Component {
                 <button
                     onClick={() => {
                         {/*  ML can use this.state.message and this.stat.url*/}
-                        console.log(this.state);
+                        console.log(this.state.message);
+
+                        const emojiRegex = require('emoji-regex/es2015/index.js');
+                        const emojiRegexText = require('emoji-regex/es2015/text.js');
+                        let regex = emojiRegex();
+
+                        Object.keys(this.state.message).map((key, index) => {
+                            let text = this.state.message[key];
+                            let match = regex.exec(text);
+                            
+                            if(match) {
+                                console.log(match);
+                                console.log(match.index);
+                            }
+
+                        });
+                        
                     }}
                 >
                     Am I Depressed?  
