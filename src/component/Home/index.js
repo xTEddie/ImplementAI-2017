@@ -80,17 +80,19 @@ class Home extends Component {
 
                         let {message} = this.state;
                         Object.keys(message).map((key, index) => {
-                        
-                            let match = regex.exec(message[key]);
-                            
-                            // Filter out emoji
-                            if(match) {
-                                message[key] = message[key].substr(0, match.index) + message[key].substring(match.index + match.input.length);
-                            }
 
-                            this.setState({message: message});    
-                            console.log(this.state.message)                        
+                            let match = regex.exec(message[key]);
+                            while(match){
+                                // console.log(match);                                
+                                // Filter out emoji                    
+                                message[key] = message[key].substr(0, match.index) + message[key].substring(match.index + match.input.length);                        
+                                match = regex.exec(message[key]);
+
+                                this.setState({message: message});    
+                            }
+                                                                        
                         });
+                        console.log(this.state.message);
                         
                     }}
                 >
