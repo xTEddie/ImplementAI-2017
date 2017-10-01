@@ -209,14 +209,10 @@ class Home extends Component {
                             $("#result").append('<div id="circle"></div>');
                             this.renderProgressBar();
 
-                            if(this.state.progress < 50) {
+                            if(this.state.progress > 50) {
                                 this.renderGif();
                                 this.setState({disabledGif: true});
-                            }
-
-                        // else
-                        //     this.renderHappyEmoji();
-                                // this.setState({disabledGif: false});                            
+                            }                        
                         })
                         .catch((error) => {
                             console.log(error);
@@ -241,6 +237,20 @@ class Home extends Component {
             </button>
         );
 
+        let returnMessage = ("");
+        console.log(this.state.progress)
+        if (this.state.progress < 50 && this.state.progress >= 20) {
+            returnMessage = (
+                <p>You seems happy</p>
+            )
+        }
+        else if (this.state.progress < 20 && this.state.progress > 0) 
+            returnMessage = (<p> You Seems to be in really Happy !!</p>);
+            
+        else if (this.state.progress >= 50) 
+            returnMessage = (<p> You Seems to be not too happy. Enjoy some funny Gify!!</p>);
+        
+
         return (
             <div className="container">
                 <div> 
@@ -258,6 +268,9 @@ class Home extends Component {
                 {this.state.loggedIn? checkDepressionButton: ''}
                 <div id="result">
                     <div id="circle"></div>
+                </div>
+                <div>
+                {this.state.progress? returnMessage: ""}
                 </div>
                 <div id="gif-wrap"></div>
             </div>
